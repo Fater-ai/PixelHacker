@@ -1,7 +1,7 @@
 <!--
  * @Author: Xu Ziyang
  * @Date: 2025-04-30 10:28:15
- * @LastEditTime: 2025-04-30 13:19:36
+ * @LastEditTime: 2025-04-30 22:17:22
  * @Description: 
 -->
 <div align="center">
@@ -23,7 +23,7 @@
 
 <sup>1</sup> Huazhong University of Science and Technology. <sup>2</sup> VIVO AI Lab.  
 
-[![arxiv](https://img.shields.io/badge/Paper-arXiv-orange)](https://arxiv.org/abs/2504.20438) [![license](https://img.shields.io/badge/License-Apache_2.0-blue)](LICENSE) [![Project](https://img.shields.io/badge/Project-https://hustvl.github.io/projects/PixelHacker-purple)](https://hustvl.github.io/projects/PixelHacker) [![Demo](https://img.shields.io/badge/Demo-Comming_Soon-b687f8)]()
+[![arxiv](https://img.shields.io/badge/Paper-arXiv-orange)](https://arxiv.org/abs/2504.20438) [![license](https://img.shields.io/badge/License-Apache_2.0-blue)](LICENSE) [![Project](https://img.shields.io/badge/Project-https://hustvl.github.io/PixelHacker-purple)](https://hustvl.github.io/PixelHacker) [![Demo](https://img.shields.io/badge/Demo-Comming_Soon-b687f8)]()
 </div>
 
 <img src="./assets/Pipeline.png"></img>
