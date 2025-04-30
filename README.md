@@ -1,3 +1,9 @@
+<!--
+ * @Author: Xu Ziyang
+ * @Date: 2025-04-30 10:28:15
+ * @LastEditTime: 2025-04-30 13:19:36
+ * @Description: 
+-->
 <div align="center">
     <img src="./assets/LOGO.png" width="280px"></img>
 </div>
@@ -25,10 +31,19 @@
 ## 🌟Highlights
 * **Latent Categories Guidance (LCG)**: Simple yet effective inpainting paradigm with superior structural and semantic consistency. Let's advance inpainting research to challenge more complex scenarios!
 * **PixelHacker**: Diffusion-based inpainting model trained with LCG, outperforming SOTA performance across multiple natural-scene (Places2) and human-face (CelebA-HQ, and FFHQ) benchmarks!
+* **Comprehensive SOTA Performance**：
+    * **Places2** (Natural Scene)
+        * Evaluated at 512 resolution using 10k test set images with 40-50% masked regions, PixelHacker achieved the best performance with **FID 8.59** and **LPIPS 0.2026**.
+        * Evaluated at 512 resolution using 36.5k validation set images with large and small mask settings, PixelHacker achieved the best performance on **FID (large: 2.05, small: 0.82)** and **U-IDS (large:36.07, small:42.21)**, and the second best performance on **LPIPS (large:0.169, small:0.088)**.
+        * Evaluated at 256 and 512 resolutions using validation set images with a highly randomised masking strategy, PixelHacker achieved the best performance at 512 resolution with **FID 5.75 and LPIPS 0.305**, and the second best performance at 256 resolution with **FID 9.25 and LPIPS 0.367**.
+    * **CelebA-HQ** (Human-Face Scene)
+        * Evaluated at 512 resolution, PixelHacker achieved the best performance with **FID 4.75 and LPIPS 0.115**.
+    * **FFHQ** (Human-Face Scene)
+        * Evaluated at 256 resolution, PixelHacker achieved the best performance with **FID 6.35 and LPIPS 0.229**.
 
 ## 🔥Updates
 
-* **`April 30, 2025`:** We have released the [arXiv paper](https://arxiv.org/abs/2504.20438) for PixelHacker. The code and project page will be released soon.
+* **`April 30, 2025`:** 🔥We have released the [arXiv paper](https://arxiv.org/abs/2504.20438) for PixelHacker. The code and project page will be released soon.
 
 ## 🏕️Performance on Natural Scene
 
