@@ -1,7 +1,7 @@
 <!--
  * @Author: Xu Ziyang
  * @Date: 2025-04-30 10:28:15
- * @LastEditTime: 2025-04-30 22:17:22
+ * @LastEditTime: 2025-05-01 01:10:00
  * @Description: 
 -->
 <div align="center">
@@ -43,7 +43,8 @@
 
 ## 🔥Updates
 
-* **`April 30, 2025`:** 🔥We have released the [arXiv paper](https://arxiv.org/abs/2504.20438) for PixelHacker. The code and project page will be released soon.
+* **`May 1, 2025`**: 🔥 We have released the [project page](https://hustvl.github.io/PixelHacker) with 63+ demos on natural and human-face scenes. Have fun! 🤗
+* **`April 30, 2025`:** 🔥 We have released the [arXiv paper](https://arxiv.org/abs/2504.20438) for PixelHacker. The code and project page will be released soon.
 
 ## 🏕️Performance on Natural Scene
 
