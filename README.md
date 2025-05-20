@@ -1,9 +1,3 @@
-<!--
- * @Author: Xu Ziyang
- * @Date: 2025-04-30 10:28:15
- * @LastEditTime: 2025-05-01 01:10:00
- * @Description: 
--->
 <div align="center">
     <img src="./assets/LOGO.png" width="280px"></img>
 </div>
@@ -43,6 +37,7 @@
 
 ## 🔥Updates
 
+* **`May 20, 2025`**: 🔥 We have released the [code](https://github.com/hustvl/PixelHacker) and [weights](https://huggingface.co/hustvl/PixelHacker/tree/main). The weights include the pretrained and all fine-tuned versions, each only 0.8B params. Feel free to play!
 * **`May 1, 2025`**: 🔥 We have released the [project page](https://hustvl.github.io/PixelHacker) with 63+ demos on natural and human-face scenes. Have fun! 🤗
 * **`April 30, 2025`:** 🔥 We have released the [arXiv paper](https://arxiv.org/abs/2504.20438) for PixelHacker. The code and project page will be released soon.
 
@@ -62,6 +57,51 @@
 </div>
 
 <img src="./assets/Human-Face.png"></img>
+
+## 📦Environment Setups
+* torch 2.3.0
+* transformers 4.40.0
+* diffusers 0.30.2
+* See 'requirements.txt' for detailed Python libraries required
+
+```shell
+conda create -n pixelhacker python=3.10
+conda activate pixelhacker
+# cd /xx/xx/PixelHacker
+pip install -r requirements.txt
+```
+
+## 🗃️Model Checkpoints
+* Download the checkpoint of [VAE](https://huggingface.co/hustvl/PixelHacker/tree/main/vae) and put it into ../PixelHacker/vae.
+
+* Download the checkpoints of [pretrained version](https://huggingface.co/hustvl/PixelHacker/tree/main/pretrained), [fine-tuned version (places2)](https://huggingface.co/hustvl/PixelHacker/tree/main/ft_places2), [fine-tuned version (celeba-hq)](https://huggingface.co/hustvl/PixelHacker/tree/main/ft_celebahq), [fine-tuned version (ffhq)](https://huggingface.co/hustvl/PixelHacker/tree/main/ft_ffhq), and put them into ../PixelHacker/weight.
+
+* Finally, the detailed organizational form is as follows:
+```shell
+├── PixelHacker
+│    ├── weight
+│        ├── pretrained
+│            ├── diffusion_pytorch_model.bin
+│        ├── ft_places2
+│            ├── diffusion_pytorch_model.bin
+│        ├── ft_celebahq
+│            ├── diffusion_pytorch_model.bin
+│        ├── ft_ffhq
+│            ├── diffusion_pytorch_model.bin
+│    ├── vae
+│        ├── config.json
+│        ├── diffusion_pytorch_model.bin
+│    ├── ...
+```
+
+## 🔮Inference
+You can run the following code directly to get the inpainting result of the example image-mask pair, and the result will be generated in ../PixelHacker/outputs. If you want to infer on custom data, just place the image and mask with the same name in ../PixelHacker/imgs and ../PixelHacker/masks, respectively, then run the following code as well.
+```shell
+python infer_pixelhacker.py \
+--config config/PixelHacker_sdvae_f8d4.yaml \
+--weight weight/ft_places/diffusion_pytorch_model.bin
+```
+
 
 ## 🎓Citation
 
