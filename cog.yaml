@@ -1,20 +1,21 @@
 # cog.yaml
 build:
   gpu: true
-  python_version: "3.10"  # As suggested by PixelHacker's conda setup
-  cuda: "12.1"            # Compatible with PyTorch 2.3.0
+  python_version: "3.10"
+  cuda: "12.1" # This implies PyTorch 2.3.x and its corresponding Triton (2.3.0)
 
-  # System packages can be installed here if needed, e.g., build-essentials for some packages
-  # system_packages:
-  #   - "build-essential"
+  system_packages:
+    - "build-essential"
+    - "cmake"
+    - "git"
 
   python_packages:
+    # These are from PixelHacker's requirements.txt, with adjustments for known issues.
     - "accelerate==0.34.0"
     - "diffusers==0.30.2"
     - "einops==0.7.0"
-    - "fla==0.1"
-    # flash-attn will be installed via a 'run' command below
-    - "lightning==2.5.1"
+    # 'fla' (flash-linear-attention) will be installed from git in 'run'
+    - "lightning==2.5.1" # Preferred over pytorch-lightning
     - "lpips==0.1.4"
     - "numpy==1.24.4"
     - "omegaconf==2.3.0"
@@ -29,27 +30,37 @@ build:
     - "sympy==1.12"
     - "tensorboard==2.9.0"
     - "timm==0.9.11"
-    - "tokenizers==0.19.0"
+    - "tokenizers==0.19.0" # Keep original
     - "toml==0.10.2"
+    # Torch and Torchvision: Cog base image for cuda 12.1/py3.10 provides torch 2.3.0.
+    # Explicitly listing them helps pip's resolver if it runs into issues.
     - "torch==2.3.0"
+    - "torchvision" # Let pip find compatible for 2.3.0
+    # Triton: DO NOT list triton==3.2.0. Torch 2.3.0 will pull in triton==2.3.0.
     - "torchinfo==1.8.0"
     - "torchmetrics==1.6.0"
-    - "torchvision"
     - "tqdm==4.66.2"
-    - "transformers==4.40.0"
-    # triton==3.2.0 # Triton often has complex build dependencies.
-                     # PyTorch 2.3.0 might come with a compatible Triton or it might build from source.
-                     # If issues arise, we might need to be more specific or pre-build it.
-                     # For now, let's see if it installs correctly. If not, try removing it
-                     # and see if flash-attn still works, or install it via a run command.
-    - "huggingface-hub"
+    - "transformers==4.40.0" # Crucial to keep PixelHacker's version
+    - "huggingface-hub" # Can usually be a bit flexible, or pin to a known good recent one like 0.20.3
     - "Pillow"
 
   run:
-    # Install flash-attn with the required environment variable and options
-    - "FLASH_ATTENTION_SKIP_CUDA_BUILD=TRUE pip install flash-attn==2.5.8 --no-build-isolation"
-    # Triton can also be problematic, if the direct pip install above fails, try installing it here too.
-    # It's generally best if torch can pull its own compatible triton.
-    # - "pip install triton==3.2.0" # Only if the python_packages entry for triton fails
+    # 1. Upgrade pip - will be used for subsequent RUN commands
+    - "pip install --upgrade pip"
+
+    # 2. Install flash-linear-attention from Git.
+    # This is the most likely way to get the 'fla.ops.gla' module while being
+    # compatible with transformers==4.40.0 and triton==2.3.0 (from torch 2.3.0).
+    # It will compile against the already installed torch, triton, transformers.
+    - "pip install -U git+https://github.com/TorchRWKV/flash-linear-attention.git --no-deps"
+
+    # 3. Install flash-attn (HazyResearch version)
+    # Use --no-deps to prevent it from messing with already established dependencies,
+    # especially if its own deps are what cause chain reactions.
+    # It needs to compile its CUDA kernels.
+    - "pip install flash-attn==2.5.8 --no-build-isolation --no-deps"
+
+    # 4. Sanity check: List installed packages to see what versions ended up there
+    - "pip list"
 
 predict: "predict.py:Predictor"

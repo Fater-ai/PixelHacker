@@ -1,6 +1,6 @@
 # predict.py
 import os
-import sys
+# import sys # <-- REMOVE or comment out this line
 from typing import List
 
 import torch
@@ -11,15 +11,12 @@ import huggingface_hub
 
 from cog import BasePredictor, Input, Path
 
-# Add pixelhacker_src to Python path to import model definitions
-# This assumes 'pixelhacker_src' is in the same directory as predict.py
-sys.path.append(os.path.join(os.path.dirname(__file__), "pixelhacker_src"))
+# The sys.path.append line that was here is removed.
+# Python should find 'pixelhacker_src' as it's in the root of the /src directory.
 
-# Assuming pipeline.py is at the same level as predict.py
-from pipeline import PixelHacker_Pipeline
-# Assuming the 'src/pixelhacker/models/unet_pixelhacker.py' is copied to
-# './pixelhacker_src/models/unet_pixelhacker.py'
-from models.unet_pixelhacker import UNetPixelHacker
+from pipeline import PixelHacker_Pipeline # Assumes pipeline.py is in /src
+
+
 
 
 # Constants for model download
@@ -43,7 +40,6 @@ MODEL_WEIGHTS_CACHE_DIR = "./model_weights_cache"
 
 
 class Predictor(BasePredictor):
-    unet: UNetPixelHacker
     vae: AutoencoderKL
     scheduler: DDIMScheduler
     pipe: PixelHacker_Pipeline
@@ -53,6 +49,7 @@ class Predictor(BasePredictor):
     def setup(self):
         """Load the model into memory to make running multiple predictions efficient."""
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        from gla_model.PixelHacker import PixelHacker as UNetPixelHacker
         self.dtype = torch.float16 if self.device == "cuda" else torch.float32 # float16 for GPU
 
         print(f"Using device: {self.device}, dtype: {self.dtype}")
@@ -73,6 +70,19 @@ class Predictor(BasePredictor):
             raise FileNotFoundError(f"Master config file {CONFIG_FILE_PATH} not found. Make sure it's in the 'configs' directory.")
         self.master_config = OmegaConf.load(CONFIG_FILE_PATH)
         print("Master configuration loaded.")
+
+        print("Instantiating UNet...")
+        unet_params = self.master_config.model.params
+        
+        # The import of UNetPixelHacker is now local to setup()
+        self.unet = UNetPixelHacker(**unet_params).to(self.device, dtype=self.dtype)
+        
+        # ... (load UNet weights, scheduler, pipeline) ...
+        # The _load_pipeline_for_version method will also need to use the locally defined UNetPixelHacker,
+        # or you pass it as an argument, or make UNetPixelHacker a class attribute after import in setup.
+
+        # To make UNetPixelHacker available to _load_pipeline_for_version:
+        self.UNetPixelHacker_class = UNetPixelHacker # Store the class itself
 
         # Initialize placeholders for model-specific components
         self.unet = None
